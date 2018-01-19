@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>November Day Class Blog</title>
+</head>
+<body>
+<div class="content">
+    <section id="blogList">
+            <article class="blogSnippet">
+                <h1>{{ blog.title }}</h1>
+                <h6>by {{ blog.author.username }} - {{ blog.date }}</h6>
+                <p>{{ blog.content }}</p>
+                <p>{{ blog.slug }}</p>
+            </article>
+    </section>
+</div>
+</body>
+</html>

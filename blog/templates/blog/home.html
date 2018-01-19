@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>November Day Class Blog</title>
+</head>
+<body>
+<div class="content">
+    <section id="blogList">
+        {% for b in blogs %}
+            <article class="blogSnippet">
+                <h1><a href="{% url 'single_blog_view' b.category.slug b.slug %}">{{ b.title }}</a></h1>
+                <h6>by {{ b.author.username }} - {{ b.date }}</h6>
+                <p>{{ b.content }}</p>
+            </article>
+        {% endfor %}
+    </section>
+</div>
+</body>
+</html>
