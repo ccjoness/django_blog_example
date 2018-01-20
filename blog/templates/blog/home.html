@@ -1,20 +1,55 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>November Day Class Blog</title>
-</head>
-<body>
-<div class="content">
-    <section id="blogList">
-        {% for b in blogs %}
-            <article class="blogSnippet">
-                <h1><a href="{% url 'single_blog_view' b.category.slug b.slug %}">{{ b.title }}</a></h1>
-                <h6>by {{ b.author.username }} - {{ b.date }}</h6>
-                <p>{{ b.content }}</p>
-            </article>
-        {% endfor %}
-    </section>
-</div>
-</body>
-</html>
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+
+        <!-- Blog Entries Column -->
+        <div class="col-md-8">
+
+            <h1 class="my-4">Page Heading
+                <small>Secondary Text</small>
+            </h1>
+
+            <!-- Blog Post -->
+            {% for b in blogs %}
+                <div class="card mb-4">
+                    {#                    <img class="card-img-top" src="http://placehold.it/750x300" alt="Card image cap">#}
+                    <div class="card-body">
+                        <h2 class="card-title">{{ b.title }}</h2>
+                        <p class="card-text">{{ b.content }}</p>
+                        <a href="{% url 'single_blog_view' b.category.slug b.slug %}" class="btn btn-primary">Read More
+                            &rarr;</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        Posted on {{ b.date }} by {{ b.author.username }}
+                    </div>
+
+                    <div class="card-footer">
+                        <h6>Tags:</h6>
+
+                        {% for t in b.tag.all %}
+                            {{ t.name }}
+                        {% endfor %}
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+            <!-- Pagination -->
+            <ul class="pagination justify-content-center mb-4">
+                <li class="page-item">
+                    <a class="page-link" href="#">&larr; Older</a>
+                </li>
+                <li class="page-item disabled">
+                    <a class="page-link" href="#">Newer &rarr;</a>
+                </li>
+            </ul>
+
+        </div>
+
+        {% include '_side_bar.html' %}
+
+    </div>
+    <!-- /.row -->
+
+{% endblock %}

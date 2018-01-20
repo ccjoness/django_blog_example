@@ -4,12 +4,14 @@ from blog.models import Blog, Category
 
 def home(request):
     blog_list = Blog.objects.all()
-    return render(request, 'blog/home.html', {'blogs': blog_list})
+    cat = Category.objects.all()
+    return render(request, 'blog/home.html', {'blogs': blog_list, 'cat': cat})
 
 
 def single_blog_view(request, cat, slug):
     blog = get_object_or_404(Blog, category__slug=cat, slug=slug)
-    return render(request, 'blog/single_blog_view.html', {'blog': blog})
+    cat = Category.objects.all()
+    return render(request, 'blog/single_blog_view.html', {'blog': blog, 'cat': cat})
 
 
 def category_list(request, cat):
