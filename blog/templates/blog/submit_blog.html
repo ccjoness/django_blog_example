@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+{% block content %}
+    <div class="row">
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+            <form action="{% url 'create_blog' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="title">Title:</label><br>
+                <input type="text" name="title" id="title">
+                <br>
+                <label for="content">Content:</label><br>
+                <textarea name="content" id="content" cols="30" rows="10"></textarea>
+                <br>
+                <label for="category">Categoty:</label><br>
+                <select name="category" id="category">
+                    {% for c in cat %}
+                        <option value="{{ c.slug }}">{{ c.name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <label for="tags">Tags:</label><br>
+                <select name="tags" id="tags" multiple>
+                    {% for t in tag %}
+                        <option value="{{ t.slug }}">{{ t.name }}</option>
+                    {% endfor %}
+                </select>
+                <br>
+                <input type="submit" value="Submit" id="subBtn">
+            </form>
+
+        </div>
+        {% include '_side_bar.html' %}
+    </div>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}

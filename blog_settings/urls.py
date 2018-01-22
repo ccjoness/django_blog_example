@@ -17,12 +17,18 @@ from django.contrib import admin
 from django.urls import path
 from blog import views as b_views
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', b_views.home, name='home'),
+    path('b/create/', b_views.create_blog, name='create_blog'),
     path('b/<slug:cat>/<slug:slug>/', b_views.single_blog_view, name='single_blog_view'),
     path('b/<slug:cat>/', b_views.category_list, name='category_list'),
 
+    # API URL's
     path('api/add_tag/', b_views.add_tag, name='add-tag'),
+
+    # Authentication URL's
+    path('register/', b_views.register, name='register'),
+    path('login/', b_views.log_in_view, name='login'),
+    path('logout/', b_views.log_out, name='logout'),
 ]

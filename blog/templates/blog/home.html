@@ -55,7 +55,6 @@
     </div>
     <!-- /.row -->
 
-
     <div id="myModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
 
@@ -63,10 +62,9 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 id="modalHeader" class="modal-title">Modal Header</h4>
                 </div>
-                <div class="modal-body">
-                    <p>Some text in the modal.</p>
+                <div class="modal-body" id="modalBody">
+                    {#        {% include 'blog/_add_tag_modal.html' %}#}
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -75,10 +73,15 @@
 
         </div>
     </div>
+
 {% endblock %}
 
 {% block js %}
     <script>
+        $('#myModal').on('hidden.bs.modal', '.modal', function () {
+            $(this).removeData('bs.modal');
+        });
+
         function callModal(slug) {
             console.log(slug);
             $.ajax({
@@ -88,7 +91,7 @@
                 },
                 type: 'POST',
                 success: function (response) {
-                    $('#modalHeader').text(response.blog.title);
+                    $('#modalBody').html(response.modal_html);
                     console.log(response)
 
                 }

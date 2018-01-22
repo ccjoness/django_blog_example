@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock %}
+{% block content %}
+    <div class="row">
+        <!-- Post Content Column -->
+        <div class="col-lg-8">
+            <form action="{% url 'login' %}" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="username">Username:</label><br>
+                <input type="text" name="username" id="username">
+                <br>
+                <label for="password">Password:</label><br>
+                <input type="password" name="password" id="password">
+                <br>
+                <input type="submit" value="Sign In" id="subBtn">
+            </form>
+
+        </div>
+        {% include '_side_bar.html' %}
+    </div>
+
+{% endblock %}
+
+{% block js %}
+
+{% endblock %}
