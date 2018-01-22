@@ -23,4 +23,6 @@ urlpatterns = [
     path('', b_views.home, name='home'),
     path('b/<slug:cat>/<slug:slug>/', b_views.single_blog_view, name='single_blog_view'),
     path('b/<slug:cat>/', b_views.category_list, name='category_list'),
+
+    path('api/add_tag/', b_views.add_tag, name='add-tag'),
 ]

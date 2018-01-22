@@ -24,6 +24,9 @@
                     </div>
 
                     <div class="card-footer">
+                        <button data-slug="{{ b.slug }}" class="addTag btn btn-info btn-lg" type="button"
+                                data-toggle="modal" data-target="#myModal" onclick="callModal('{{ b.slug }}')">Add a Tag
+                        </button>
                         <h6>Tags:</h6>
 
                         {% for t in b.tag.all %}
@@ -52,4 +55,46 @@
     </div>
     <!-- /.row -->
 
+
+    <div id="myModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 id="modalHeader" class="modal-title">Modal Header</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Some text in the modal.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block js %}
+    <script>
+        function callModal(slug) {
+            console.log(slug);
+            $.ajax({
+                url: '{% url "add-tag" %}',
+                data: {
+                    blogSlug: slug
+                },
+                type: 'POST',
+                success: function (response) {
+                    $('#modalHeader').text(response.blog.title);
+                    console.log(response)
+
+                }
+            })
+
+        }
+
+    </script>
 {% endblock %}

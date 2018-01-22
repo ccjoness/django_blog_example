@@ -8,7 +8,7 @@ class Blog(models.Model):
     author = models.ForeignKey(User, related_name='blogs', on_delete=models.CASCADE)
     date = models.DateTimeField(auto_now_add=True)
     content = models.TextField()
-    super_slug = models.SlugField(blank=True, null=True, unique=True)
+    slug = models.SlugField(blank=True, null=True, unique=True)
     category = models.ForeignKey('Category', default=1, related_name='blogs', on_delete=models.SET_DEFAULT)
     tag = models.ManyToManyField('Tag', related_name='blogs', blank=True)
 
