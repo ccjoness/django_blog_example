@@ -6,6 +6,8 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 
+from blog.forms import BlogModelForm
+
 
 def home(request):
     blog_list = Blog.objects.all()
@@ -23,15 +25,17 @@ def category_list(request, cat):
     # blog_list = Category.objects.get()
     category = get_object_or_404(Category, slug=cat)
     blog_list = category.blogs.all()
-    return render(request, 'blog/category_list.html', {'blogs': blog_list, 'cat': category})
+    return render(request, 'blog/category_list.html', {'blogs': blog_list, 'cata': category})
 
 
 def add_tag(request):
     if request.method == 'POST':
         slug = request.POST.get('blogSlug')
         post = Blog.objects.get(slug=slug)
-        tags_exclude = Tag.objects.all().exclude(blogs__slug=post.slug)
-        modal_html = render_to_string('blog/_add_tag_modal.html', {'blog': post, 'other_tags': tags_exclude})
+        tags = Tag.objects.all()
+        modal_html = render_to_string('blog/_add_tag_modal.html', {
+            'blog': post,
+            'other_tags': tags})
         return JsonResponse({
             'message': 'success',
             'modal_html': modal_html
@@ -66,25 +70,22 @@ def log_out(request):
 
 @login_required
 def create_blog(request):
+    form = BlogModelForm(request.POST or None)
     if request.method == 'POST':
-
-        tags = request.POST.getlist('tags')
-        cat = Category.objects.get(slug=request.POST.get('category'))
-        blog = Blog()
-        blog.title = request.POST.get('title')
+        tags = request.POST.getlist('tag')
+        print(request.POST)
+        blog = form.save(commit=False)
         blog.author = request.user
-        blog.category = cat
-        blog.content = request.POST.get('content')
-
         blog.save()
 
         for t in tags:
-            tmp_tag = Tag.objects.get(slug=t)
+            tmp_tag = Tag.objects.get(pk=t)
             blog.tag.add(tmp_tag)
         blog.save()
         return HttpResponseRedirect('/')
 
     return render(request, 'blog/submit_blog.html', {
         'tag': Tag.objects.all(),
-        'cat': Category.objects.all()
+        'cat': Category.objects.all(),
+        'form': form
     })

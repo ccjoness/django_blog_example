@@ -1,0 +1,7 @@
+<ul>
+    {% for c in cat %}
+        <li>
+            <a href="{% url 'category_list' c.slug %}">{{ c.name }}</a>
+        </li>
+    {% endfor %}
+</ul>

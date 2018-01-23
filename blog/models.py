@@ -10,7 +10,10 @@ class Blog(models.Model):
     content = models.TextField()
     slug = models.SlugField(blank=True, null=True, unique=True)
     category = models.ForeignKey('Category', default=1, related_name='blogs', on_delete=models.SET_DEFAULT)
-    tag = models.ManyToManyField('Tag', related_name='blogs', blank=True)
+
+    # tag = models.ManyToManyField('Tag', related_name='blogs', blank=True)
+    def grab_blurb(self):
+        return self.content[:300]
 
     def __str__(self):
         return '{} by {} - {}'.format(self.title, self.author.username, self.date)
@@ -29,6 +32,9 @@ class Blog(models.Model):
                     checking = False
             self.slug = slug_title
         super().save(args, kwargs)
+
+    class Meta:
+        ordering = ['-pk']
 
 
 class Category(models.Model):
@@ -78,3 +84,14 @@ class Tag(models.Model):
                     checking = False
             self.slug = slug_title
         super().save(args, kwargs)
+
+
+class TagBlog(models.Model):
+    tag = models.ForeignKey('Tag', on_delete=models.CASCADE, related_name='blogs')
+    blog = models.ForeignKey('Blog', on_delete=models.CASCADE, related_name='tags')
+
+    def count_tags(self):
+        return TagBlog.objects.filter(tag__slug=self.tag.slug, blog__slug=self.blog.slug).count()
+
+    def __str__(self):
+        return '{} on {}'.format(self.tag.name, self.blog.title)
